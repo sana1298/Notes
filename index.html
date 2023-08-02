@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #form{
+            display: none;
+            background-color: aquamarine;
+            width: 300px;
+            height: 200px;
+            text-align: center;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+        #title{
+            height: 20px;
+            width: 200px;
+        }
+        #desc{
+            height: 100px;
+        }
+        #save-btn{
+            height: 25px;
+            width: 80px;
+            border-radius: 3px;
+        }
+        #add-btn{
+            height: 30px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Notes Application</h1>
+    <button id="add-btn"><strong>Add Notes</strong></button>
+    <form id="form">
+        <label for="title"><strong>Title</strong></label><br>
+        <input type="text" name="title" id="title" /><br>
+        <label for="description"><strong>Notes</strong></label><br>
+        <textarea name="description" id="desc"></textarea> <br>
+        <button id="save-btn"><strong>Save</strong></button>
+    </form>
+    <div>
+        <ul id="ul-list"></ul>
+    </div>
+</body>
+
+    <script>
+        let notes=JSON.parse(localStorage.getItem('note'))||[]
+        let add_btn=document.getElementById("add-btn");
+        let form=document.getElementById("form");
+        let title1 =document.querySelector("#title");
+        // console.log("value",title1)
+        let descr =document.querySelector("#desc");
+        // console.log("value descriio",desc)
+        let save_btn=document.getElementById("save-btn");
+        
+        // let new_btn=`<button id="edit-btn" onClick="edit_btn()">Edit</button>
+        //       <button id="delete-btn" onClick="delete_btn()">Delete</button>`;
+        //       console.log(new_btn);
+
+        add_btn.addEventListener("click",(e)=>{
+             e.preventDefault();
+             form.style.display="block";
+             document.getElementById("title").innerHTML=" ";
+        })
+       
+        save_btn.addEventListener("click",(e)=>{
+            e.preventDefault();
+            form.style.display="none";
+              let head=title1.value;
+              let body=descr.value;
+              let note={
+                title1:head,
+                descr:body,
+            }
+              notes.push(note);
+              localStorage.setItem("note",JSON.stringify(notes));
+        //   console.log(localStorage);
+            //   console.log(notes);
+            // let new_btn=`<button id="edit-btn" onClick="edit_btn(note)">Edit</button>
+            //   <button id="delete-btn" onClick="delete_btn(note)">Delete</button>`;
+            let edit=document.createElement('button');
+            edit.setAttribute("id","edit_id")
+            edit.innerHTML="Edit";
+            edit.onclick=()=>edit_btn(note)
+
+            let deleteB=document.createElement('button');
+            deleteB.setAttribute("id","delete_id");
+            deleteB.innerHTML="Delete";
+            deleteB.onclick=()=>delete_btn(note)
+            //   console.log(new_btn);
+           
+              let ul_list=document.getElementById("ul-list")
+              let list=document.createElement("li");
+             list.innerHTML=note.title1;
+             console.log(list.innerHTML)
+              ul_list.appendChild(list)
+              ul_list.appendChild(edit)
+              ul_list.appendChild(deleteB)
+              
+        document.getElementById("title").value="";
+        document.getElementById("desc").value="";
+
+        function delete_btn(note){
+                // console.log("===========dfgggg");
+                ul_list.removeChild(list)
+                ul_list.removeChild(edit)
+              ul_list.removeChild(deleteB)
+                // console.log("===========");
+
+            }
+        });
+       
+    
+           function edit_btn(note){
+            form.style.display="block";
+            document.getElementById("title").value=note.title1;
+            document.getElementById("desc").value=note.descr;
+            document.getElementById("save-btn").innerHTML="update"
+            document.getElementById("save-btn").onclick=()=>update(note)
+            console.log("edrtyuio",note.descr,note.title1)
+            console.log(60+70)
+           }
+       
+       
+    </script>
+</html>
